@@ -18,6 +18,8 @@ const quadrants = [
     gradient: "linear-gradient(135deg, #B8D8C8, #E8A8B8)" },             // BR pink/mint
 ];
 
+const AUTO_CYCLE_INTERVAL = 2500;
+
 export default function HeroPop() {
   const [logoPressed, setLogoPressed] = useState(false);
   const [popOpen, setPopOpen] = useState(false);
@@ -25,14 +27,25 @@ export default function HeroPop() {
   const [activeBg, setActiveBg] = useState<string | null>(null);
   const [prevBg, setPrevBg] = useState<string | null>(null);
   const [pressedIndex, setPressedIndex] = useState<number | null>(null);
+  const [autoCycling, setAutoCycling] = useState(false);
+  const autoIndexRef = useRef(0);
   const popRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const activeBgRef = useRef<string | null>(null);
 
   function changeBg(bg: string) {
-    setPrevBg(activeBg);
+    setPrevBg(activeBgRef.current);
     setActiveBg(bg);
+    activeBgRef.current = bg;
   }
 
+  function pressQuadrant(i: number) {
+    setPressedIndex(i);
+    setTimeout(() => setPressedIndex(null), 200);
+    changeBg(quadrants[i].bg);
+  }
+
+  // Initial open animation → start auto-cycling
   useEffect(() => {
     const t1 = setTimeout(() => setLogoPressed(true), 600);
     const t2 = setTimeout(() => {
@@ -41,13 +54,25 @@ export default function HeroPop() {
       setHasAnimated(true);
     }, 900);
     const t3 = setTimeout(() => {
-      setPressedIndex(0);
-      setTimeout(() => setPressedIndex(null), 200);
-      changeBg(quadrants[0].bg);
+      pressQuadrant(0);
+      autoIndexRef.current = 1;
+      setAutoCycling(true);
     }, 1500);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
 
+  // Auto-cycle through quadrants (stops when pop closes)
+  useEffect(() => {
+    if (!autoCycling || !popOpen) return;
+    const interval = setInterval(() => {
+      const i = autoIndexRef.current;
+      pressQuadrant(i);
+      autoIndexRef.current = (i + 1) % quadrants.length;
+    }, AUTO_CYCLE_INTERVAL);
+    return () => clearInterval(interval);
+  }, [autoCycling, popOpen]);
+
+  // Close pop on outside click
   useEffect(() => {
     if (!popOpen) return;
     function handleClick(e: MouseEvent) {
@@ -144,9 +169,8 @@ export default function HeroPop() {
                     {/* Inner squircle = fill (inset to reveal border) */}
                     <button
                       onClick={() => {
-                        setPressedIndex(i);
-                        setTimeout(() => setPressedIndex(null), 200);
-                        changeBg(q.bg);
+                        setAutoCycling(false);
+                        pressQuadrant(i);
                       }}
                       className="absolute cursor-pointer"
                       style={{
