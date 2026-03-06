@@ -72,20 +72,6 @@ export default function HeroPop() {
     return () => clearInterval(interval);
   }, [autoCycling, popOpen]);
 
-  // Close pop on outside click
-  useEffect(() => {
-    if (!popOpen) return;
-    function handleClick(e: MouseEvent) {
-      if (
-        popRef.current && !popRef.current.contains(e.target as Node) &&
-        logoRef.current && !logoRef.current.contains(e.target as Node)
-      ) {
-        setPopOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [popOpen]);
 
   function handleLogoClick() {
     if (!hasAnimated) return;

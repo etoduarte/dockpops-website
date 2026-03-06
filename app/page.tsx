@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import HeroPop from "./HeroPop";
+import PlatinumDemo from "./PlatinumDemo";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -66,6 +67,9 @@ export default function DockPopsPage() {
           </p>
         </div>
       </section>
+
+      {/* Interactive Platinum Demo */}
+      <PlatinumDemo />
 
       {/* 2. Make Pops out of anything */}
       <section className="relative py-24 px-6 overflow-hidden">
