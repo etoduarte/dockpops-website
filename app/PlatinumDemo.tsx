@@ -202,7 +202,7 @@ function PlatWindow({
 
 /* ─── Main Component ─── */
 export default function PlatinumDemo() {
-  const [popOpen, setPopOpen] = useState(true);
+  const [popOpen, setPopOpen] = useState(false);
   const [wins, setWins] = useState<{ id: string; z: number }[]>([]);
   const [nextZ, setNextZ] = useState(10);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -340,13 +340,14 @@ export default function PlatinumDemo() {
                   <button
                     onClick={() => setPopOpen(p => !p)}
                     style={{
-                      fontSize: 24, cursor: "pointer", lineHeight: 1,
+                      cursor: "pointer", lineHeight: 1,
                       background: popOpen ? "#B0B0B0" : "transparent",
-                      ...R, borderRadius: 3, padding: "1px 3px",
+                      ...R, borderRadius: 3, padding: "2px 3px 0",
+                      display: "flex", alignItems: "center", justifyContent: "center",
                     }}
                     title="DockPops"
                   >
-                    🟧
+                    <Image src="/appicon.png" alt="DockPops" width={24} height={24} style={{ borderRadius: 4 }} />
                   </button>
                 </div>
 
