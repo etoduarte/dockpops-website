@@ -301,27 +301,27 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
       <div ref={containerRef} className="relative h-full flex flex-col">
 
         {/* Branding */}
-        <div className="flex-1 flex flex-col items-center justify-center pt-28 px-6">
+        <div className="flex-1 flex flex-col items-center justify-center pt-[clamp(2rem,10vh,7rem)] px-6">
           <Image
             src="/appicon.png" alt="DockPops"
             width={240} height={240}
             sizes="96px"
-            className="w-20 h-20 md:w-24 md:h-24 rounded-[18px] md:rounded-[22px] shadow-xl mb-4"
+            className="w-20 h-20 md:w-24 md:h-24 rounded-[18px] md:rounded-[22px] shadow-xl mb-[clamp(0.5rem,1.5vh,1rem)]"
             quality={95} priority
           />
           <h1
-            className="text-5xl md:text-6xl font-bold text-white mb-2"
+            className="text-5xl md:text-6xl font-bold text-white mb-[clamp(0.25rem,0.8vh,0.5rem)]"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,0.3)" }}
           >
             DockPops
           </h1>
           <p
-            className="text-lg md:text-xl text-white/70 font-medium mb-6"
+            className="text-lg md:text-xl text-white/70 font-medium mb-[clamp(0.5rem,2vh,1.5rem)]"
             style={{ textShadow: "0 1px 8px rgba(0,0,0,0.2)" }}
           >
-            The missing launcher for the Dock
+            Organize your Dock like your iPhone
           </p>
-          <div className="bg-gradient-to-r from-orange-500 to-amber-400 text-black text-sm font-black px-5 py-1.5 rounded-full shadow-lg mb-3 tracking-wide">
+          <div className="bg-gradient-to-r from-orange-500 to-amber-400 text-black text-sm font-black px-5 py-1.5 rounded-full shadow-lg mb-[clamp(0.25rem,1vh,0.75rem)] tracking-wide">
             🎉 30% OFF LAUNCH SALE
           </div>
           <a href="#" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>

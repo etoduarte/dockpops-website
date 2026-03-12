@@ -28,8 +28,8 @@ export default function DockPopsPage() {
         <div className="max-w-6xl mx-auto px-6 h-10 flex items-center justify-between text-[13px]">
           <div className="flex items-center gap-5">
             <a href="#" className="text-white font-bold text-sm tracking-tight mr-2">DockPops</a>
-            <a href="#features" className="text-white/50 hover:text-white/80 transition-colors">Features</a>
             <a href="#pricing" className="text-white/50 hover:text-white/80 transition-colors">Pricing</a>
+            <a href="#features" className="text-white/50 hover:text-white/80 transition-colors">Features</a>
             <a href="#support" className="text-white/50 hover:text-white/80 transition-colors">Support</a>
           </div>
           <DownloadBadge location="nav" className="h-7 w-auto" height={36} width={120} />
@@ -37,7 +37,7 @@ export default function DockPopsPage() {
       </nav>
 
       {/* Hero — full viewport */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative hero-height">
         <HeroDemo />
       </section>
 
@@ -64,11 +64,8 @@ export default function DockPopsPage() {
         </div>
       </section>
 
-      {/* Feature Carousel — Here a Pop, there a Pop */}
-      <FeatureCarousel />
-
       {/* Pricing */}
-      <section id="pricing" className="relative py-24 px-6 overflow-hidden">
+      <section id="pricing" className="relative py-14 px-6 overflow-hidden">
         <div className="absolute inset-0">
           <Image src="/bg-tangerine.jpg" alt="" fill sizes="100vw" quality={85} className="object-cover" />
           <div className="absolute inset-0 bg-black/20" />
@@ -89,7 +86,7 @@ export default function DockPopsPage() {
           {/* Pricing cards */}
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
             {/* Free tier */}
-            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-white/10 p-8 text-left">
+            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-white/10 p-6 text-left">
               <p className="text-sm font-semibold text-white/40 uppercase tracking-wider mb-2">Free</p>
               <p className="text-3xl font-bold mb-1">DockPops</p>
               <p className="text-white/50 mb-6">Free forever</p>
@@ -102,11 +99,27 @@ export default function DockPopsPage() {
                   <span className="text-white/40 mt-0.5">&#10003;</span>
                   6 apps per Pop
                 </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  Swipe between Pops
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  Drag to reorder items
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  Works with any Dock position
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  Light &amp; dark mode
+                </li>
               </ul>
             </div>
 
             {/* Premium tier */}
-            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-orange-500/30 p-8 text-left relative overflow-hidden">
+            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-orange-500/30 p-6 text-left relative overflow-hidden">
               <div className="absolute top-0 right-0 bg-orange-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
                 LIFETIME
               </div>
@@ -154,9 +167,11 @@ export default function DockPopsPage() {
             </div>
           </div>
 
-          {/* Full feature catalog */}
-          <h3 className="text-2xl font-bold mb-10">All the features</h3>
+          {/* Shared CTA below pricing cards */}
+          <DownloadBadge location="pricing" className="h-12 w-auto mx-auto mb-12" height={48} width={160} />
 
+          {/* Full feature catalog */}
+          <h3 className="text-lg font-semibold text-white/50 text-center mb-6">39+ features and counting</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
             {[
               {
@@ -181,11 +196,35 @@ export default function DockPopsPage() {
                 ],
               },
               {
+                emoji: "⭐",
+                category: "Premium Features",
+                subsections: [
+                  {
+                    title: "🧠 SmartyPops",
+                    features: [
+                      "Swipe, dismiss, and regenerate SmartiePop previews",
+                      "Save SmartyPop suggestions to your Pops",
+                    ],
+                  },
+                  {
+                    title: "📌 Pop Out Windows",
+                    features: [
+                      "Pop Out any Pop as a floating, always-on-top window",
+                      "Launch items directly from Pop Out windows",
+                    ],
+                  },
+                ],
+              },
+              {
                 emoji: "👆",
                 category: "Multi-Pop Carousel",
                 features: [
-                  { text: "Swipe between Pops", free: true },
+                  { text: "Swipe between 2 Pops", free: true },
+                  { text: "Show up to 6 apps", free: true },
                   { text: "Change animation speed (Slow / Medium / Fast)", free: true },
+                  { text: "Swipe between 10 Pops", free: false },
+                  { text: "Show up to 16 apps, files or folders", free: false },
+                  { text: "Sort items Alphabetically, by Most Used or Recently Added", free: false },
                 ],
               },
               {
@@ -224,29 +263,12 @@ export default function DockPopsPage() {
                 ],
               },
               {
-                emoji: "⭐",
-                category: "Premium Features",
-                subsections: [
-                  {
-                    title: "🧠 SmartyPops",
-                    features: [
-                      "Swipe, dismiss, and regenerate SmartiePop previews",
-                      "Save SmartyPop suggestions to your Pops",
-                    ],
-                  },
-                  {
-                    title: "📌 Pop Out Windows",
-                    features: [
-                      "Pop Out any Pop as a floating, always-on-top window",
-                      "Launch items directly from Pop Out windows",
-                    ],
-                  },
-                  {
-                    title: "🎛️ Poptions",
-                    features: [
-                      "Sort per Pop: Alphabetical, Most Used, Recently Added",
-                    ],
-                  },
+                emoji: "🔒",
+                category: "Private by Design",
+                features: [
+                  { text: "No data collection — zero analytics, zero tracking", free: true },
+                  { text: "No network access — everything runs locally on your Mac", free: true },
+                  { text: "Fully sandboxed with minimal permissions", free: true },
                 ],
               },
               {
@@ -302,26 +324,12 @@ export default function DockPopsPage() {
             ))}
           </div>
 
-          {/* Privacy — full width, darker */}
-          <div id="privacy" className="mt-6 bg-black/60 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 text-left">
-            <h4 className="font-semibold text-white mb-5 text-base tracking-wider">🔒 Private by Design</h4>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div>
-                <h5 className="font-medium text-white text-sm mb-1">No Data Collection</h5>
-                <p className="text-[13px] text-white/50 leading-snug">DockPops does not collect, store, or transmit any personal data. Zero analytics. Zero tracking.</p>
-              </div>
-              <div>
-                <h5 className="font-medium text-white text-sm mb-1">No Network Access</h5>
-                <p className="text-[13px] text-white/50 leading-snug">The app makes no network calls. Everything runs locally. Your app list, your groups, your preferences — all stored on your Mac.</p>
-              </div>
-              <div>
-                <h5 className="font-medium text-white text-sm mb-1">Fully Sandboxed</h5>
-                <p className="text-[13px] text-white/50 leading-snug">DockPops runs in a macOS sandbox with minimal permissions. It can read files you select and access UserDefaults. That&apos;s it.</p>
-              </div>
-            </div>
-          </div>
+
         </div>
       </section>
+
+      {/* Feature Carousel — Here a Pop, there a Pop */}
+      <FeatureCarousel />
 
       {/* Support */}
       <section id="support" className="py-24 px-6">
