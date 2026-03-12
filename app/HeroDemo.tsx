@@ -57,6 +57,7 @@ const WPOS: Record<string, { tp: number; lp: number; w: number }> = {
   notes:  { tp: 20, lp: 24, w: 320 },
   photos: { tp: 16, lp: 57, w: 220 },
   maps:   { tp: 51, lp: 57, w: 230 },
+  trash:  { tp: 18, lp: 40, w: 280 },
 };
 
 /* ─── Window Content ─── */
@@ -84,6 +85,34 @@ function WinBody({ id }: { id: string }) {
           <Image src={src} alt="" fill sizes="60px" className="object-cover" />
         </div>
       ))}
+    </div>
+  );
+  if (id === "trash") return (
+    <div className="text-[13px]">
+      {/* Finder toolbar */}
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="#8E8E93">
+          <path d="M2 4l6-3 6 3v8l-6 3-6-3V4z" />
+        </svg>
+        <span className="text-[11px] text-gray-400">1 item</span>
+      </div>
+      {/* PDF file */}
+      <a
+        href="/easter-egg.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group"
+      >
+        <div className="w-16 h-20 bg-white rounded-md shadow-sm border border-gray-200 flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-5 bg-red-500 flex items-center justify-center">
+            <span className="text-[8px] font-bold text-white tracking-wider">PDF</span>
+          </div>
+          <span className="text-[20px] mt-3">🎁</span>
+        </div>
+        <span className="text-[11px] text-gray-700 group-hover:text-blue-600 text-center leading-tight">
+          You found me.pdf
+        </span>
+      </a>
     </div>
   );
   if (id === "maps") return (
@@ -165,7 +194,7 @@ function MacWindow({
 interface Win { id: string; z: number; x: number; y: number }
 
 /* ─── Main Component ─── */
-export default function HeroDemo() {
+export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } = {}) {
   const [popOpen, setPopOpen] = useState(false);
   const [wins, setWins] = useState<Win[]>([]);
   const [nextZ, setNextZ] = useState(10);
@@ -292,8 +321,11 @@ export default function HeroDemo() {
           >
             The missing launcher for the Dock
           </p>
-          <a href="#" className="bg-white text-black text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-white/90 transition-colors shadow-lg">
-            Download Free
+          <div className="bg-gradient-to-r from-orange-500 to-amber-400 text-black text-sm font-black px-5 py-1.5 rounded-full shadow-lg mb-3 tracking-wide">
+            🎉 30% OFF LAUNCH SALE
+          </div>
+          <a href="#" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>
+            <Image src="/mac-app-store-badge.svg" alt="Download on the Mac App Store" width={200} height={60} className="h-12 w-auto" />
           </a>
         </div>
 
@@ -301,11 +333,12 @@ export default function HeroDemo() {
         <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 20 }}>
           <div className="relative w-full h-full">
             {wins.map(w => {
-              const app = APPS.find(a => a.id === w.id)!;
+              const app = APPS.find(a => a.id === w.id);
+              const name = app?.name ?? (w.id === "trash" ? "Trash" : w.id);
               return (
                 <div key={w.id} className="pointer-events-auto">
                   <MacWindow
-                    id={w.id} name={app.name} active={w.id === topId}
+                    id={w.id} name={name} active={w.id === topId}
                     z={w.z} x={w.x} y={w.y} w={WPOS[w.id].w}
                     onClose={() => close(w.id)} onFocus={() => front(w.id)}
                     onDragStart={e => startDrag(w.id, e)}
@@ -408,7 +441,17 @@ export default function HeroDemo() {
             ))}
 
             <div className="w-px h-7 bg-white/20 mx-1 self-center" />
-            <div className="p-1" title="Trash"><DockIcon type="trash" /></div>
+            {easterEgg ? (
+              <button
+                className="p-1 cursor-pointer active:scale-90 transition-transform"
+                title="Trash"
+                onClick={() => open("trash")}
+              >
+                <DockIcon type="trash-full" />
+              </button>
+            ) : (
+              <div className="p-1" title="Trash"><DockIcon type="trash" /></div>
+            )}
           </div>
         </div>
       </div>

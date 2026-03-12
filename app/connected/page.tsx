@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import HeroDemo from "./HeroDemo";
-import FeatureCarousel from "./FeatureCarousel";
-import ABHeadline from "./ABHeadline";
-import DownloadBadge from "./DownloadBadge";
+import HeroDemo from "../HeroDemo";
+import FeatureCarousel from "../FeatureCarousel";
+import ABHeadline from "../ABHeadline";
+import DownloadBadge from "../DownloadBadge";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -38,7 +38,7 @@ export default function DockPopsPage() {
 
       {/* Hero — full viewport */}
       <section className="relative h-screen overflow-hidden">
-        <HeroDemo />
+        <HeroDemo easterEgg />
       </section>
 
       {/* Use Pops to open Anything */}
