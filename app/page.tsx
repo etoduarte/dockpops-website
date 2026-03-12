@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import HeroPop from "./HeroPop";
-import PlatinumDemo from "./PlatinumDemo";
+import HeroDemo from "./HeroDemo";
+import FeatureCarousel from "./FeatureCarousel";
+import ABHeadline from "./ABHeadline";
 
 export const metadata: Metadata = {
   openGraph: {
-    title: "DockPops — The Missing App Launcher for Your Dock",
-    description: "Organize apps, files, and folders into groups in your Dock. Native Mac app, no tracking.",
+    title: "DockPops — The Missing Launcher for Your Dock",
+    description: "iPhone-like app folders for your Dock. Organize apps, files, and folders into Pops. Native Mac app, no tracking.",
     images: [{ url: "/preview.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DockPops — The Missing App Launcher for Your Dock",
-    description: "Organize apps, files, and folders into groups in your Dock. Native Mac app, no tracking.",
+    title: "DockPops — The Missing Launcher for Your Dock",
+    description: "iPhone-like app folders for your Dock. Organize apps, files, and folders into Pops. Native Mac app, no tracking.",
     images: ["/preview.png"],
   },
 };
@@ -26,6 +27,7 @@ export default function DockPopsPage() {
         <div className="max-w-6xl mx-auto px-6 h-10 flex items-center justify-between text-[13px]">
           <div className="flex items-center gap-5">
             <a href="#features" className="text-white/50 hover:text-white/80 transition-colors">Features</a>
+            <a href="#pricing" className="text-white/50 hover:text-white/80 transition-colors">Pricing</a>
             <a href="#privacy" className="text-white/50 hover:text-white/80 transition-colors">Privacy</a>
             <a href="#support" className="text-white/50 hover:text-white/80 transition-colors">Support</a>
           </div>
@@ -40,132 +42,279 @@ export default function DockPopsPage() {
 
       {/* Hero — full viewport */}
       <section className="relative h-screen overflow-hidden">
-        <HeroPop />
+        <HeroDemo />
       </section>
 
-      {/* 1. Click Pops to open anything */}
+      {/* Use Pops to open Anything */}
       <section id="features" className="relative py-24 px-6 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/bg-tangerine.jpg" alt="" fill className="object-cover" />
+          <Image src="/bg-tangerine.jpg" alt="" fill sizes="100vw" quality={85} className="object-cover" />
           <div className="absolute inset-0 bg-black/30" />
         </div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-10">Click Pops to open anything</h2>
-          <div className="aspect-video rounded-2xl overflow-hidden border border-white/20 shadow-2xl shadow-black/50">
-            <iframe
-              src="https://www.youtube.com/embed/w20oPNo7X08?autoplay=1&mute=1&loop=1&playlist=w20oPNo7X08&rel=0&vq=hd1080"
-              title="How do you Pop?"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
-          <p className="text-xl font-bold text-white/80 max-w-2xl mx-auto mt-8 leading-relaxed">
-            The Dock launches stuff. It just doesn&apos;t organize it very well.
-            DockPops adds groups to your Dock so your favorite apps, folders, and files
-            are just a click away.
+        <div className="relative max-w-3xl mx-auto text-center">
+          <ABHeadline className="text-4xl md:text-5xl font-bold mb-6" />
+          <p className="text-xl font-bold text-white leading-relaxed mb-10 max-w-md mx-auto">
+            DockPops put iPhone folders in your Dock. Your apps, files, and folders — a click away.
           </p>
+          <Image
+            src="/family-photo-imac.png"
+            alt="DockPops in action — Settings window, Pop organizer, an open Pop in the Dock, a popped-out Music window, and a Games Pop"
+            width={1825}
+            height={1324}
+            sizes="(max-width: 768px) 100vw, 768px"
+            quality={90}
+            className="drop-shadow-2xl"
+          />
         </div>
       </section>
 
-      {/* Interactive Platinum Demo */}
-      <PlatinumDemo />
+      {/* Feature Carousel — Here a Pop, there a Pop */}
+      <FeatureCarousel />
 
-      {/* 2. Make Pops out of anything */}
-      <section className="relative py-24 px-6 overflow-hidden">
+      {/* Pricing */}
+      <section id="pricing" className="relative py-24 px-6 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/bg-blueberry.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-10">Make Pops out of anything</h2>
-          <div className="aspect-video rounded-2xl overflow-hidden border border-white/20 shadow-2xl shadow-black/50">
-            <iframe
-              src="https://www.youtube.com/embed/Cf8aiYG-ZOo?autoplay=1&mute=1&loop=1&playlist=Cf8aiYG-ZOo&rel=0&vq=hd1080"
-              title="Make Pops out of anything"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
-          <p className="text-xl font-bold text-white/80 max-w-2xl mx-auto mt-8 leading-relaxed">
-            Add Apps, Files and Folders to your Pops.
-            Your Weekly Report pop opens everything you need in one click.
-          </p>
-        </div>
-      </section>
-
-      {/* 3. SmartyPops can get you started */}
-      <section className="relative py-24 px-6 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/bg-grape.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-10">SmartyPops can get you started</h2>
-          <div className="aspect-video rounded-2xl overflow-hidden border border-white/20 shadow-2xl shadow-black/50">
-            <iframe
-              src="https://www.youtube.com/embed/juNhzw-GLEs?autoplay=1&mute=1&loop=1&playlist=juNhzw-GLEs&rel=0&vq=hd1080"
-              title="SmartyPops can get you started"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
-          <p className="text-xl font-bold text-white/80 max-w-2xl mx-auto mt-8 leading-relaxed">
-            If you&apos;re feeling stuck, SmartyPops can suggest some pops to get you
-            started. You can always change, rename or delete them later!
-          </p>
-        </div>
-      </section>
-
-      {/* 4. Bento — Premium features */}
-      <section className="relative py-24 px-6 overflow-hidden">
-        <div className="absolute inset-0">
-          <Image src="/bg-tangerine.jpg" alt="" fill className="object-cover" />
+          <Image src="/bg-tangerine.jpg" alt="" fill sizes="100vw" quality={85} className="object-cover" />
           <div className="absolute inset-0 bg-black/20" />
         </div>
         <div className="relative max-w-4xl mx-auto text-center">
           <h2
-            className="text-4xl md:text-5xl font-black mb-10"
+            className="text-4xl md:text-5xl font-black mb-12"
             style={{ fontFamily: "ui-rounded, 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif", fontStretch: "condensed" }}
           >
-            Big Upgrade. Low Price.
+            Download Free. Upgrade Once.
           </h2>
-          <Image
-            src="/bento.jpg"
-            alt="DockPops Premium — Up to 10 Pops, 16 items per Pop, Open All, Alternate App Icons, Bigger SmartyPops. $4.99 one-time purchase."
-            width={1920}
-            height={1080}
-            className="rounded-2xl shadow-2xl shadow-black/50 border border-white/10"
-          />
-          <p className="text-xl font-bold text-white/80 max-w-2xl mx-auto mt-8 leading-relaxed">
-            DockPops is free to use for 2 pops of 6 items each. Upgrade once and keep forever.
-          </p>
-        </div>
-      </section>
 
-      {/* Privacy */}
-      <section id="privacy" className="py-24 px-6 bg-zinc-900/30">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-semibold text-center mb-4">Private by design.</h2>
-          <p className="text-xl text-white/50 text-center mb-12">Your data stays on your Mac. Period.</p>
+          {/* Pricing cards */}
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
+            {/* Free tier */}
+            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-white/10 p-8 text-left">
+              <p className="text-sm font-semibold text-white/40 uppercase tracking-wider mb-2">Free</p>
+              <p className="text-3xl font-bold mb-1">DockPops</p>
+              <p className="text-white/50 mb-6">Free forever</p>
+              <ul className="space-y-3 text-white/70">
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  2 Pops
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white/40 mt-0.5">&#10003;</span>
+                  6 apps per Pop
+                </li>
+              </ul>
+            </div>
 
-          <div className="bg-zinc-900/50 rounded-2xl border border-white/10 p-8 md:p-12">
-            <h3 className="text-2xl font-semibold mb-6">Privacy Policy</h3>
-            <p className="text-sm text-white/40 mb-6">Last updated: March 2026</p>
-            <div className="space-y-6 text-white/70">
+            {/* Premium tier */}
+            <div className="bg-zinc-900/80 backdrop-blur rounded-2xl border border-orange-500/30 p-8 text-left relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-orange-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
+                LIFETIME
+              </div>
+              <p className="text-sm font-semibold text-orange-400 uppercase tracking-wider mb-2">Premium</p>
+              <p className="text-3xl font-bold mb-1">
+                $9.99
+                <span className="text-lg font-normal text-white/40 ml-2">one time</span>
+              </p>
+              <p className="text-white/50 mb-6">No subscription. Ever.</p>
+              <ul className="space-y-3 text-white/70">
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Up to 10 Pops
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  16 items per Pop
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Add files &amp; folders
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Pop out into floating windows
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Open All &amp; Sort
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Alternate app icons
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Filters on Add App screen
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  SmartyPop suggestions
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Full feature catalog */}
+          <h3 className="text-2xl font-bold mb-10">All the features</h3>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
+            {[
+              {
+                emoji: "🖱️",
+                category: "Dock Icon & Access",
+                features: [
+                  { text: "Click the DockPops icon to open a popover of apps and files", free: true },
+                  { text: "Pops work with Dock on bottom, left, or right side of screen", free: true },
+                  { text: "5 premium app icon variants (Blue, Teal, Violet, Graphite, Amber)", free: false },
+                ],
+              },
+              {
+                emoji: "🚀",
+                category: "Launch Apps, Files & Folders",
+                features: [
+                  { text: "Click an app icon to launch it", free: true },
+                  { text: "Click a file icon to open the file", free: true },
+                  { text: "Click a folder icon to open it in Finder", free: true },
+                  { text: "Files and folders show rich QuickLook thumbnail previews", free: true },
+                  { text: "\"Open All\" launches every item in a Pop simultaneously", free: false },
+                  { text: "Confirmation dialog before Opening All (global toggle)", free: false },
+                ],
+              },
+              {
+                emoji: "👆",
+                category: "Multi-Pop Carousel",
+                features: [
+                  { text: "Swipe between Pops", free: true },
+                  { text: "Change animation speed (Slow / Medium / Fast)", free: true },
+                ],
+              },
+              {
+                emoji: "🤏",
+                category: "Drag & <s>Drop</s> Pop",
+                features: [
+                  { text: "Drag apps, files, or folders from Finder into the Pop setup window", free: true },
+                  { text: "Pop picker when multiple Pops exist", free: false },
+                  { text: "Drag onto the DockPops Dock icon to add to a Pop", free: false },
+                  { text: "Drag multiple items from Finder at once", free: false },
+                ],
+              },
+              {
+                emoji: "🔍",
+                category: "App Browser",
+                features: [
+                  { text: "+ button and Browse button open the App Browser", free: true },
+                  { text: "Live search bar", free: true },
+                  { text: "Category filters", free: true },
+                  { text: "Click an app to add or remove from current Pop", free: true },
+                  { text: "\"Not in Any Pop\" filter", free: false },
+                  { text: "\"Recently Installed\" filter", free: false },
+                ],
+              },
+              {
+                emoji: "🗂️",
+                category: "Organizing Pops",
+                features: [
+                  { text: "Reorder items by dragging within the editor grid", free: true },
+                  { text: "Remove icons from browser or Pop preview", free: true },
+                  { text: "Rename Pops by swiping right on the name or clicking it on the Pop preview", free: true },
+                  { text: "Reorder Pops by dragging in the sidebar", free: true },
+                  { text: "Swipe and right-click for rename and delete", free: true },
+                  { text: "Create a new Pop from the button or ⌘N", free: true },
+                  { text: "Item count and limit", free: true },
+                ],
+              },
+              {
+                emoji: "⭐",
+                category: "Premium Features",
+                subsections: [
+                  {
+                    title: "🧠 SmartyPops",
+                    features: [
+                      "Swipe, dismiss, and regenerate SmartiePop previews",
+                      "Save SmartyPop suggestions to your Pops",
+                    ],
+                  },
+                  {
+                    title: "📌 Pop Out Windows",
+                    features: [
+                      "Pop Out any Pop as a floating, always-on-top window",
+                      "Launch items directly from Pop Out windows",
+                    ],
+                  },
+                  {
+                    title: "🎛️ Poptions",
+                    features: [
+                      "Sort per Pop: Alphabetical, Most Used, Recently Added",
+                    ],
+                  },
+                ],
+              },
+              {
+                emoji: "✨",
+                category: "And More",
+                features: [
+                  { text: "Easy onboarding with starter Pop templates", free: true },
+                  { text: "Right-click actions on Dock icon", free: true },
+                  { text: "Reduce Motion respected — no spring animations", free: true },
+                  { text: "Light and dark mode support", free: true },
+                  { text: "Access Settings via ⌘, or gear button", free: true },
+                  { text: "\"Launch at login\" toggle", free: true },
+                ],
+              },
+            ].map((group: Record<string, unknown>, gi: number) => (
+              <div key={gi} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4">
+                <h4 className="font-semibold text-white mb-3 text-sm tracking-wider" dangerouslySetInnerHTML={{ __html: `${group.emoji} ${group.category}` }} />
+                {Array.isArray(group.subsections) ? (
+                  <div className="space-y-4">
+                    {(group.subsections as Array<{ title: string; features: string[] }>).map((sub, si) => (
+                      <div key={si}>
+                        <p className="text-xs font-semibold text-white/50 mb-1.5">{sub.title}</p>
+                        <ul className="space-y-1.5">
+                          {sub.features.map((f, fi) => (
+                            <li key={fi} className="flex items-start gap-2 text-[13px] leading-snug">
+                              <span className="mt-0.5 text-[9px] font-bold uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded text-green-400 bg-green-400/10">
+                                Pro
+                              </span>
+                              <span className="text-white/60">{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <ul className="space-y-1.5">
+                    {(group.features as Array<{ text: string; free: boolean }>)?.map((f, fi) => (
+                      <li key={fi} className="flex items-start gap-2 text-[13px] leading-snug">
+                        {f.free ? (
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-white/30 shrink-0" />
+                        ) : (
+                          <span className="mt-0.5 text-[9px] font-bold uppercase tracking-wider shrink-0 px-1.5 py-0.5 rounded text-green-400 bg-green-400/10">
+                            Pro
+                          </span>
+                        )}
+                        <span className="text-white/60">{f.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Privacy — full width, darker */}
+          <div id="privacy" className="mt-6 bg-black/60 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 text-left">
+            <h4 className="font-semibold text-white mb-5 text-base tracking-wider">🔒 Private by Design</h4>
+            <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <h4 className="font-medium text-white mb-2">No Data Collection</h4>
-                <p>DockPops does not collect, store, or transmit any personal data. Zero analytics. Zero tracking.</p>
+                <h5 className="font-medium text-white text-sm mb-1">No Data Collection</h5>
+                <p className="text-[13px] text-white/50 leading-snug">DockPops does not collect, store, or transmit any personal data. Zero analytics. Zero tracking.</p>
               </div>
               <div>
-                <h4 className="font-medium text-white mb-2">No Network Access</h4>
-                <p>The app makes no network calls. Everything runs locally. Your app list, your groups, your preferences — all stored in UserDefaults on your Mac.</p>
+                <h5 className="font-medium text-white text-sm mb-1">No Network Access</h5>
+                <p className="text-[13px] text-white/50 leading-snug">The app makes no network calls. Everything runs locally. Your app list, your groups, your preferences — all stored on your Mac.</p>
               </div>
               <div>
-                <h4 className="font-medium text-white mb-2">Fully Sandboxed</h4>
-                <p>DockPops runs in a macOS sandbox with minimal permissions. It can read files you select and access UserDefaults. That&apos;s it.</p>
+                <h5 className="font-medium text-white text-sm mb-1">Fully Sandboxed</h5>
+                <p className="text-[13px] text-white/50 leading-snug">DockPops runs in a macOS sandbox with minimal permissions. It can read files you select and access UserDefaults. That&apos;s it.</p>
               </div>
             </div>
           </div>

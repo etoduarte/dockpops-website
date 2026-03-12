@@ -241,7 +241,7 @@ export default function PlatinumDemo() {
       </div>
 
       <div className="relative max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#f5f5f7] mb-10" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>Try a Pop</h2>
+        <h2 className="text-4xl md:text-5xl font-black text-[#f5f5f7] mb-10" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.3)", fontFamily: "ui-rounded, 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}>Click&#8209;a&#8209;Pop.</h2>
 
         {/* iMac container */}
         <div ref={containerRef} className="mx-auto relative" style={{ maxWidth: 640, overflow: "hidden" }}>

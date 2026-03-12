@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import QAOverlay from "./QAOverlay";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({
         style={{ fontFamily: "ui-rounded, 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}
       >
         {children}
+        <QAOverlay />
       </body>
     </html>
   );
