@@ -324,7 +324,7 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
           <div className="bg-gradient-to-r from-orange-500 to-amber-400 text-black text-sm font-black px-5 py-1.5 rounded-full shadow-lg mb-[clamp(0.25rem,1vh,0.75rem)] tracking-wide">
             🎉 30% OFF LAUNCH SALE
           </div>
-          <a href="#" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>
+          <a href="https://apps.apple.com/us/app/dockpops/id6759999009?mt=12&ct=website_hero" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>
             <Image src="/mac-app-store-badge.svg" alt="Download on the Mac App Store" width={200} height={60} className="h-12 w-auto" />
           </a>
         </div>

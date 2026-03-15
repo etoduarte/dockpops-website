@@ -19,9 +19,11 @@ export default function DownloadBadge({
   width?: number;
   height?: number;
 }) {
+  const appStoreUrl = `https://apps.apple.com/us/app/dockpops/id6759999009?mt=12&ct=website_${location}`;
+
   return (
     <a
-      href="#"
+      href={appStoreUrl}
       className="hover:opacity-80 transition-opacity"
       onClick={() => {
         window.gtag?.("event", "download_click", { location });
