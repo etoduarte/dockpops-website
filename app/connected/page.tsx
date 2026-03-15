@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DockPops — The Missing Launcher for Your Dock",
     description: "iPhone-like app folders for your Dock. Organize apps, files, and folders into Pops. Native Mac app, no tracking.",
-    images: [{ url: "/preview.png", width: 1200, height: 630 }],
+    images: [{ url: "/preview.png", width: 1280, height: 720 }],
   },
   twitter: {
     card: "summary_large_image",
