@@ -44,6 +44,65 @@ function DockIcon({ type, size = 40 }: { type: string; size?: number }) {
   );
 }
 
+/* ─── Dynamic Icon — live composite grid of active Pop's apps ─── */
+function DynamicDockIcon({ apps, size = 40 }: { apps: { id: string }[]; size?: number }) {
+  const padding = size * 0.15;
+  const gap = size * 0.05;
+  const cols = apps.length <= 4 ? 2 : 3;
+  const cellSize = (size - padding * 2 - gap * (cols - 1)) / cols;
+
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        clipPath: "url(#sq)",
+        background: "rgba(40,40,40,0.85)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        display: "grid",
+        gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
+        gap: gap,
+        padding: padding,
+        alignContent: "center",
+        justifyContent: "center",
+        filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.2))",
+      }}
+    >
+      {apps.map(app => (
+        <Image
+          key={app.id}
+          src={`/icons/${app.id}.png`}
+          alt=""
+          width={64}
+          height={64}
+          sizes={`${Math.round(cellSize)}px`}
+          quality={90}
+          style={{
+            width: cellSize,
+            height: cellSize,
+            borderRadius: cellSize * 0.22,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Pop definitions for all 3 Pops ─── */
+type PopDef = { key: string; name: string; apps: { id: string; name: string }[] };
+const POPS: PopDef[] = [
+  { key: "main", name: "My Apps", apps: APPS },
+  { key: "work", name: "Office", apps: [
+    { id: "word", name: "Word" }, { id: "powerpoint", name: "PowerPoint" },
+    { id: "teams", name: "Teams" }, { id: "onedrive", name: "OneDrive" },
+  ]},
+  { key: "creative", name: "Creative", apps: [
+    { id: "pixelmator-pro", name: "Pixelmator" }, { id: "final-cut-pro", name: "Final Cut" },
+    { id: "logic-pro", name: "Logic Pro" },
+  ]},
+];
+
 /* ─── Dock layout (Mail removed — DockPops centered) ─── */
 const DOCK_L = ["finder", "safari", "messages"];
 const DOCK_R = ["music", "photos"];
@@ -194,18 +253,101 @@ function MacWindow({
 interface Win { id: string; z: number; x: number; y: number }
 
 /* ─── Main Component ─── */
-export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } = {}) {
-  const [popOpen, setPopOpen] = useState(false);
+export default function HeroDemo({ easterEgg = false, promoLink }: { easterEgg?: boolean; promoLink?: string } = {}) {
+  // openIcon = which Dock icon's popover is showing; centers on that icon
+  const [openIcon, setOpenIcon] = useState<string | null>(null);
+  // carouselPage = which pop the carousel is displaying (only used when openIcon === "main")
+  const [carouselPage, setCarouselPage] = useState(0);
+  const [arrowOffset, setArrowOffset] = useState(0);
   const [wins, setWins] = useState<Win[]>([]);
   const [nextZ, setNextZ] = useState(10);
   const [hint, setHint] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+  const popIconRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const popoverRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ id: string; startX: number; startY: number; origX: number; origY: number } | null>(null);
 
+  // The pop data currently displayed
+  function getVisiblePop(): PopDef | null {
+    if (!openIcon) return null;
+    if (openIcon === "main") return POPS[carouselPage];
+    return POPS.find(p => p.key === openIcon) ?? null;
+  }
+
+  function updateArrowOffset(iconKey: string) {
+    const iconEl = popIconRefs.current[iconKey];
+    const popoverEl = popoverRef.current;
+    if (!iconEl || !popoverEl) {
+      requestAnimationFrame(() => {
+        const el = popIconRefs.current[iconKey];
+        const pEl = popoverRef.current;
+        if (el && pEl) {
+          const iconRect = el.getBoundingClientRect();
+          const popRect = pEl.getBoundingClientRect();
+          setArrowOffset(iconRect.left + iconRect.width / 2 - (popRect.left + popRect.width / 2));
+        }
+      });
+      return;
+    }
+    const iconRect = iconEl.getBoundingClientRect();
+    const popRect = popoverEl.getBoundingClientRect();
+    setArrowOffset(iconRect.left + iconRect.width / 2 - (popRect.left + popRect.width / 2));
+  }
+
+  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [userInteracted, setUserInteracted] = useState(false);
+
+  // Initial open + auto-cycle through each Dock icon
+  const ICON_CYCLE: string[] = promoLink
+    ? ["main", "connected", "work", "creative"]
+    : ["main", "work", "creative"];
+
   useEffect(() => {
-    const t = setTimeout(() => { setPopOpen(true); setHint(false); }, 1400);
+    const t = setTimeout(() => { setOpenIcon(promoLink ? "connected" : "main"); setHint(false); }, 1400);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (userInteracted) return;
+    autoplayRef.current = setInterval(() => {
+      setOpenIcon(prev => {
+        const idx = ICON_CYCLE.indexOf(prev ?? "main");
+        return ICON_CYCLE[(idx + 1) % ICON_CYCLE.length];
+      });
+    }, 3000);
+    return () => { if (autoplayRef.current) clearInterval(autoplayRef.current); };
+  }, [userInteracted]);
+
+  function handleIconClick(iconKey: string) {
+    setUserInteracted(true);
+    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    if (openIcon === iconKey) {
+      setOpenIcon(null);
+    } else {
+      setOpenIcon(iconKey);
+      if (iconKey === "main") setCarouselPage(0);
+    }
+  }
+
+  function carouselPrev() {
+    setUserInteracted(true);
+    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    setCarouselPage(prev => (prev - 1 + POPS.length) % POPS.length);
+  }
+
+  function carouselNext() {
+    setUserInteracted(true);
+    if (autoplayRef.current) clearInterval(autoplayRef.current);
+    setCarouselPage(prev => (prev + 1) % POPS.length);
+  }
+
+  // Recalculate arrow when openIcon changes (always centers on the icon)
+  useEffect(() => {
+    if (openIcon) {
+      requestAnimationFrame(() => updateArrowOffset(openIcon));
+    }
+  }, [openIcon]);
 
   /* Drag handlers */
   const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
@@ -301,16 +443,16 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
       <div ref={containerRef} className="relative h-full flex flex-col">
 
         {/* Branding */}
-        <div className="flex-1 flex flex-col items-center justify-center pt-[clamp(2rem,10vh,7rem)] px-6">
+        <div className="flex-1 flex flex-col items-center justify-center pt-[clamp(1rem,4vh,3rem)] px-6">
           <Image
             src="/appicon.png" alt="DockPops"
             width={240} height={240}
-            sizes="96px"
-            className="w-20 h-20 md:w-24 md:h-24 rounded-[18px] md:rounded-[22px] shadow-xl mb-[clamp(0.5rem,1.5vh,1rem)]"
+            sizes="128px"
+            className="w-24 h-24 md:w-32 md:h-32 rounded-[22px] md:rounded-[28px] shadow-xl mb-[clamp(0.5rem,1.5vh,1rem)]"
             quality={95} priority
           />
           <h1
-            className="text-5xl md:text-6xl font-bold text-white mb-[clamp(0.25rem,0.8vh,0.5rem)]"
+            className="text-6xl md:text-7xl font-bold text-white mb-[clamp(0.25rem,0.8vh,0.5rem)]"
             style={{ textShadow: "0 2px 16px rgba(0,0,0,0.3)" }}
           >
             DockPops
@@ -321,10 +463,7 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
           >
             Organize your Dock like your iPhone
           </p>
-          <div className="bg-gradient-to-r from-orange-500 to-amber-400 text-black text-sm font-black px-5 py-1.5 rounded-full shadow-lg mb-[clamp(0.25rem,1vh,0.75rem)] tracking-wide">
-            🎉 30% OFF LAUNCH SALE
-          </div>
-          <a href="https://apps.apple.com/us/app/dockpops/id6759999009?mt=12&ct=website_hero" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>
+<a href="https://apps.apple.com/us/app/dockpops/id6759999009?mt=12&ct=website_hero" className="hover:opacity-90 transition-opacity" onClick={() => { window.gtag?.('event', 'download_click', { location: 'hero' }); }}>
             <Image src="/mac-app-store-badge.svg" alt="Download on the Mac App Store" width={200} height={60} className="h-12 w-auto" />
           </a>
         </div>
@@ -352,55 +491,113 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
         {/* Dock zone */}
         <div className="relative flex flex-col items-center pb-3 z-30">
 
-          <p className={`text-[13px] text-white/50 mb-3 transition-opacity duration-700 ${hint ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          <p className={`absolute bottom-full mb-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[13px] text-white/50 transition-opacity duration-700 ${hint ? "opacity-100" : "opacity-0 pointer-events-none"}`} style={{ zIndex: 41 }}>
             Click the DockPops icon ↓
           </p>
 
-          {/* Pop */}
-          <div
-            className={`relative mb-2 transition-all duration-500 ${popOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-90 pointer-events-none"}`}
-            style={{ transitionTimingFunction: "cubic-bezier(0.34,1.56,0.64,1)" }}
-          >
-            <div
-              className="relative z-10 rounded-2xl overflow-hidden shadow-2xl"
-              style={{
-                background: "rgba(255,255,255,0.18)",
-                backdropFilter: "blur(20px) saturate(150%)",
-                WebkitBackdropFilter: "blur(20px) saturate(150%)",
-                border: "0.5px solid rgba(255,255,255,0.35)",
-              }}
-            >
-              <div className="px-4 pt-3 pb-1.5">
-                <span className="text-[13px] font-semibold text-white/90">My Apps</span>
+          {/* Pop — absolutely positioned above dock, no layout shift */}
+          {(() => {
+            const isPromo = openIcon === "connected" && !!promoLink;
+            const pop = isPromo ? null : getVisiblePop();
+            const isOpen = isPromo || !!pop;
+            const isCarousel = openIcon === "main";
+            const cols = 3;
+            return (
+              <div
+                ref={popoverRef}
+                className={`absolute bottom-full mb-2 left-1/2 -translate-x-1/2 transition-all duration-500 ${isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-90 pointer-events-none"}`}
+                style={{ transitionTimingFunction: "cubic-bezier(0.34,1.56,0.64,1)", zIndex: 40 }}
+              >
+                <div
+                  className="relative z-10 rounded-2xl overflow-hidden shadow-2xl"
+                  style={{
+                    background: "rgba(255,255,255,0.18)",
+                    backdropFilter: "blur(20px) saturate(150%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(150%)",
+                    border: "0.5px solid rgba(255,255,255,0.35)",
+                  }}
+                >
+                  {isPromo ? (
+                    <div className="px-5 py-4 flex flex-col items-center text-center" style={{ minWidth: 220 }}>
+                      <Image
+                        src="/connected-podcast.jpg" alt=""
+                        width={200} height={200}
+                        className="w-16 h-16 rounded-xl shadow-lg mb-3"
+                      />
+                      <span className="text-[13px] font-semibold text-white/90 mb-1">Connected Listeners</span>
+                      <span className="text-[11px] text-white/60 mb-3">Get 30% off DockPops Premium</span>
+                      <button
+                        onClick={() => { window.open(atob(promoLink!), "_blank"); }}
+                        className="bg-white/20 hover:bg-white/30 text-white text-[12px] font-semibold px-4 py-1.5 rounded-full transition-colors cursor-pointer"
+                      >
+                        Redeem Offer
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="px-4 pt-3 pb-1.5">
+                        <span className="text-[13px] font-semibold text-white/90">{pop?.name ?? ""}</span>
+                      </div>
+                      <div className="px-3 pb-2" style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 4 }}>
+                        {pop?.apps.map(app => (
+                          <button
+                            key={app.id}
+                            onClick={() => open(app.id)}
+                            className="flex flex-col items-center gap-1 p-2 rounded-xl hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+                          >
+                            <PopIcon id={app.id} size={52} />
+                            <span className="text-[11px] text-white/80">{app.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {/* Nav dots + arrows — only in carousel mode (main icon) */}
+                  {isCarousel && (
+                    <div className="flex items-center justify-center gap-2 px-3 pb-2.5 pt-1">
+                      <button onClick={carouselPrev} className="text-white/40 hover:text-white/70 transition-colors cursor-pointer">
+                        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M7 1L3 5l4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </button>
+                      <div className="flex items-center gap-1.5">
+                        {POPS.map((p, i) => (
+                          <button
+                            key={p.key}
+                            onClick={() => { setUserInteracted(true); if (autoplayRef.current) clearInterval(autoplayRef.current); setCarouselPage(i); }}
+                            className="transition-all cursor-pointer"
+                            style={{
+                              width: i === carouselPage ? 16 : 6,
+                              height: 6,
+                              borderRadius: 3,
+                              background: i === carouselPage ? "rgba(59,130,246,0.9)" : "rgba(255,255,255,0.3)",
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <button onClick={carouselNext} className="text-white/40 hover:text-white/70 transition-colors cursor-pointer">
+                        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M3 1l4 4-4 4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {/* Glass arrow — offset to point at active icon */}
+                <div
+                  className="absolute -bottom-[7px] w-[14px] h-[14px] rotate-45 -z-10"
+                  style={{
+                    left: `calc(50% + ${arrowOffset}px)`,
+                    transform: "translateX(-50%) rotate(45deg)",
+                    background: "rgba(255,255,255,0.18)",
+                    backdropFilter: "blur(20px) saturate(150%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(150%)",
+                    border: "0.5px solid rgba(255,255,255,0.35)",
+                  }}
+                />
               </div>
-              <div className="px-3 pb-2 grid grid-cols-3 gap-1">
-                {APPS.map(app => (
-                  <button
-                    key={app.id}
-                    onClick={() => open(app.id)}
-                    className="flex flex-col items-center gap-1 p-2 rounded-xl hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
-                  >
-                    <PopIcon id={app.id} size={52} />
-                    <span className="text-[11px] text-white/80">{app.name}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="pb-1.5" />
-            </div>
-            {/* Glass arrow — rotated square, top half hidden behind body */}
-            <div
-              className="absolute -bottom-[7px] left-1/2 -translate-x-1/2 w-[14px] h-[14px] rotate-45 -z-10"
-              style={{
-                background: "rgba(255,255,255,0.18)",
-                backdropFilter: "blur(20px) saturate(150%)",
-                WebkitBackdropFilter: "blur(20px) saturate(150%)",
-                border: "0.5px solid rgba(255,255,255,0.35)",
-              }}
-            />
-          </div>
+            );
+          })()}
 
           {/* Dock */}
           <div
+            ref={dockRef}
             className="rounded-[18px] px-1.5 py-1 flex items-end gap-0.5"
             style={{
               background: "rgba(255,255,255,0.15)",
@@ -410,15 +607,17 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
             }}
           >
             {DOCK_L.map(type => (
-              <div key={type} className="p-1" title={DOCK_NAMES[type]}>
+              <div key={type} className="p-1 flex flex-col items-center" title={DOCK_NAMES[type]}>
                 <DockIcon type={type} />
+                <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
               </div>
             ))}
 
-            {/* DockPops */}
+            {/* DockPops — main icon */}
             <div className="p-1 flex flex-col items-center">
               <button
-                onClick={() => setPopOpen(p => !p)}
+                ref={el => { popIconRefs.current["main"] = el; }}
+                onClick={() => handleIconClick("main")}
                 className="cursor-pointer active:scale-90 transition-transform"
                 title="DockPops"
               >
@@ -431,26 +630,79 @@ export default function HeroDemo({ easterEgg = false }: { easterEgg?: boolean } 
                   style={{ clipPath: "url(#sq)" }}
                 />
               </button>
-              <div className="w-1 h-1 rounded-full bg-white/70 mt-0.5" />
+              <div className={`w-1 h-1 rounded-full mt-0.5 transition-colors ${openIcon === "main" ? "bg-black/60" : "bg-transparent"}`} />
+            </div>
+
+            {/* Connected promo icon — only on /connected, right after main */}
+            {promoLink && (
+              <div className="p-1 flex flex-col items-center">
+                <button
+                  ref={el => { popIconRefs.current["connected"] = el; }}
+                  onClick={() => handleIconClick("connected")}
+                  className="cursor-pointer active:scale-90 transition-transform"
+                  title="Connected"
+                >
+                  <Image
+                    src="/connected-podcast.jpg" alt="Connected"
+                    width={120} height={120}
+                    sizes="40px"
+                    className="w-10 h-10"
+                    quality={90}
+                    style={{ clipPath: "url(#sq)", borderRadius: 8 }}
+                  />
+                </button>
+                <div className={`w-1 h-1 rounded-full mt-0.5 transition-colors ${openIcon === "connected" ? "bg-black/60" : "bg-transparent"}`} />
+              </div>
+            )}
+
+            {/* MultiPops — other Pops with their own Dock icons */}
+            <div className="p-1 flex flex-col items-center">
+              <button
+                ref={el => { popIconRefs.current["work"] = el; }}
+                onClick={() => handleIconClick("work")}
+                className="cursor-pointer active:scale-90 transition-transform"
+                title="Office"
+              >
+                <DynamicDockIcon apps={POPS[1].apps} />
+              </button>
+              <div className={`w-1 h-1 rounded-full mt-0.5 transition-colors ${openIcon === "work" ? "bg-black/60" : "bg-transparent"}`} />
+            </div>
+            <div className="p-1 flex flex-col items-center">
+              <button
+                ref={el => { popIconRefs.current["creative"] = el; }}
+                onClick={() => handleIconClick("creative")}
+                className="cursor-pointer active:scale-90 transition-transform"
+                title="Creative"
+              >
+                <DynamicDockIcon apps={POPS[2].apps} />
+              </button>
+              <div className={`w-1 h-1 rounded-full mt-0.5 transition-colors ${openIcon === "creative" ? "bg-black/60" : "bg-transparent"}`} />
             </div>
 
             {DOCK_R.map(type => (
-              <div key={type} className="p-1" title={DOCK_NAMES[type]}>
+              <div key={type} className="p-1 flex flex-col items-center" title={DOCK_NAMES[type]}>
                 <DockIcon type={type} />
+                <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
               </div>
             ))}
 
             <div className="w-px h-7 bg-white/20 mx-1 self-center" />
             {easterEgg ? (
-              <button
-                className="p-1 cursor-pointer active:scale-90 transition-transform"
-                title="Trash"
-                onClick={() => open("trash")}
-              >
-                <DockIcon type="trash-full" />
-              </button>
+              <div className="p-1 flex flex-col items-center">
+                <button
+                  className="cursor-pointer active:scale-90 transition-transform"
+                  title="Trash"
+                  onClick={() => open("trash")}
+                >
+                  <DockIcon type="trash-full" />
+                </button>
+                <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
+              </div>
             ) : (
-              <div className="p-1" title="Trash"><DockIcon type="trash" /></div>
+              <div className="p-1 flex flex-col items-center" title="Trash">
+                <DockIcon type="trash" />
+                <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
+              </div>
             )}
           </div>
         </div>

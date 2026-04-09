@@ -54,7 +54,7 @@ export default function DockPopsPage() {
           </p>
           <Image
             src="/family-photo-imac.png"
-            alt="DockPops in action — Settings window, Pop organizer, an open Pop in the Dock, a popped-out Music window, and a Games Pop"
+            alt="DockPops in action — Pop organizer with sidebar, App Browser, Dynamic Icon in the Dock, and MultiPops"
             width={1825}
             height={1324}
             sizes="(max-width: 768px) 100vw, 768px"
@@ -77,11 +77,6 @@ export default function DockPopsPage() {
           >
             Download Free. Upgrade Once.
           </h2>
-
-          {/* Launch sale banner */}
-          <div className="inline-block bg-gradient-to-r from-orange-500 to-amber-400 text-black text-lg font-black px-8 py-2.5 rounded-full shadow-lg mb-10 tracking-wide">
-            🎉 30% OFF LAUNCH SALE
-          </div>
 
           {/* Pricing cards */}
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
@@ -125,8 +120,7 @@ export default function DockPopsPage() {
               </div>
               <p className="text-sm font-semibold text-orange-400 uppercase tracking-wider mb-2">Premium</p>
               <p className="text-3xl font-bold mb-1">
-                <span className="text-white/30 line-through text-xl mr-2">$9.99</span>
-                $6.99
+                $9.99
                 <span className="text-lg font-normal text-white/40 ml-2">one time</span>
               </p>
               <p className="text-white/50 mb-6">No subscription. Ever.</p>
@@ -141,7 +135,15 @@ export default function DockPopsPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  DockPop Preview in the Icon
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
                   Add files &amp; folders
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  MultiPops
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
@@ -171,7 +173,7 @@ export default function DockPopsPage() {
           <DownloadBadge location="pricing" className="h-12 w-auto mx-auto mb-12" height={48} width={160} />
 
           {/* Full feature catalog */}
-          <h3 className="text-lg font-semibold text-white/50 text-center mb-6">39+ features and counting</h3>
+          <h3 className="text-lg font-semibold text-white/50 text-center mb-6">50+ features and counting</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
             {[
               {
@@ -180,7 +182,20 @@ export default function DockPopsPage() {
                 features: [
                   { text: "Click the DockPops icon to open a popover of apps and files", free: true },
                   { text: "Pops work with Dock on bottom, left, or right side of screen", free: true },
+                  { text: "Dynamic Icon — Dock icon shows a live grid of your active Pop's apps", free: false },
+                  { text: "Adjustable grid density (Auto / 2×2 / 3×3 / 4×4)", free: false },
                   { text: "5 premium app icon variants (Blue, Teal, Violet, Graphite, Amber)", free: false },
+                ],
+              },
+              {
+                emoji: "🔗",
+                category: "Shortcuts & MultiPops",
+                features: [
+                  { text: "Every Pop auto-registers as a Siri & Spotlight shortcut", free: true },
+                  { text: "\"Show [Pop Name] in DockPops\" works from Siri, Spotlight, and Shortcuts", free: true },
+                  { text: "MultiPops — give each Pop its own Dock icon via Shortcuts", free: false },
+                  { text: "4-step guided MultiPops setup walkthrough", free: false },
+                  { text: "Dynamic Icon support for Linked Pops", free: false },
                 ],
               },
               {
@@ -217,10 +232,11 @@ export default function DockPopsPage() {
               },
               {
                 emoji: "👆",
-                category: "Multi-Pop Carousel",
+                category: "Pop Carousel",
                 features: [
                   { text: "Swipe between 2 Pops", free: true },
                   { text: "Show up to 6 apps", free: true },
+                  { text: "Navigation arrows and clickable page dots", free: true },
                   { text: "Change animation speed (Slow / Medium / Fast)", free: true },
                   { text: "Swipe between 10 Pops", free: false },
                   { text: "Show up to 16 apps, files or folders", free: false },
@@ -232,8 +248,8 @@ export default function DockPopsPage() {
                 category: "Drag & <s>Drop</s> Pop",
                 features: [
                   { text: "Drag apps, files, or folders from Finder into the Pop setup window", free: true },
+                  { text: "Drop files or apps onto the Dock icon to add to a Pop", free: true },
                   { text: "Pop picker when multiple Pops exist", free: false },
-                  { text: "Drag onto the DockPops Dock icon to add to a Pop", free: false },
                   { text: "Drag multiple items from Finder at once", free: false },
                 ],
               },
@@ -244,6 +260,7 @@ export default function DockPopsPage() {
                   { text: "+ button and Browse button open the App Browser", free: true },
                   { text: "Live search bar", free: true },
                   { text: "Category filters", free: true },
+                  { text: "Sort & filter apps", free: true },
                   { text: "Click an app to add or remove from current Pop", free: true },
                   { text: "\"Not in Any Pop\" filter", free: false },
                   { text: "\"Recently Installed\" filter", free: false },
