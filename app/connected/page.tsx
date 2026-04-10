@@ -23,8 +23,19 @@ export default function ConnectedPage() {
   return (
     <div className="min-h-screen bg-black text-[#f5f5f7]">
 
+      {/* Connected welcome banner */}
+      <a
+        href="https://apps.apple.com/redeem?ctx=offercodes&id=6759999009&code=CONNECTED"
+        className="fixed top-0 left-0 right-0 z-50 block bg-gradient-to-r from-green-600 via-yellow-500 to-blue-500 hover:brightness-110 transition-all"
+      >
+        <div className="max-w-6xl mx-auto px-6 h-[54px] flex items-center justify-center gap-3 text-[20px] font-semibold text-white text-center">
+          <Image src="/connected-podcast.jpg" alt="Connected" width={60} height={60} className="w-[30px] h-[30px] rounded shrink-0" />
+          <span>Connected listeners: Get 30% off DockPops Premium by clicking here</span>
+        </div>
+      </a>
+
       {/* Menu bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/10">
+      <nav className="fixed top-[54px] left-0 right-0 z-40 bg-black/60 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 h-10 flex items-center justify-between text-[13px]">
           <div className="flex items-center gap-5">
             <a href="#" className="text-white font-bold text-sm tracking-tight mr-2">DockPops</a>
@@ -35,15 +46,6 @@ export default function ConnectedPage() {
           <DownloadBadge location="nav" className="h-7 w-auto" height={36} width={120} />
         </div>
       </nav>
-
-      {/* Connected welcome banner */}
-      <div className="fixed top-10 left-0 right-0 z-40 bg-gradient-to-r from-green-600 via-yellow-500 to-blue-500">
-        <div className="max-w-6xl mx-auto px-6 h-9 flex items-center justify-center gap-2 text-[13px] font-semibold text-white">
-          <span>Welcome,</span>
-          <Image src="/connected-podcast.jpg" alt="Connected" width={60} height={60} className="w-5 h-5 rounded" />
-          <span>Connected Listeners</span>
-        </div>
-      </div>
 
       {/* Hero — full viewport, with Connected promo Pop */}
       <section className="relative hero-height">
