@@ -8,13 +8,13 @@ import DownloadBadge from "../DownloadBadge";
 export const metadata: Metadata = {
   openGraph: {
     title: "DockPops — The Missing Launcher for Your Dock",
-    description: "iPhone-like app folders for your Dock. Organize apps, files, and folders into Pops. Native Mac app, no tracking.",
+    description: "iPhone-like app folders for your Dock. Now every Pop is its own canvas — colors, custom Dock icons, and smarter SmartyPops suggestions. Native Mac app, no tracking.",
     images: [{ url: "/preview.png", width: 1280, height: 720 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "DockPops — The Missing Launcher for Your Dock",
-    description: "iPhone-like app folders for your Dock. Organize apps, files, and folders into Pops. Native Mac app, no tracking.",
+    description: "iPhone-like app folders for your Dock. Now every Pop is its own canvas — colors, custom Dock icons, and smarter SmartyPops suggestions. Native Mac app, no tracking.",
     images: ["/preview.png"],
   },
 };
@@ -146,7 +146,15 @@ export default function ConnectedPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
-                  DockPop Preview in the Icon
+                  Custom Dock icon per Pop
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  Per-Pop color for the popover
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-400 mt-0.5">&#10003;</span>
+                  SmartyPops &mdash; on-device AI
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
@@ -154,7 +162,7 @@ export default function ConnectedPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
-                  MultiPops
+                  Open All &amp; Sort
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
@@ -162,19 +170,11 @@ export default function ConnectedPage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
-                  Open All &amp; Sort
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-orange-400 mt-0.5">&#10003;</span>
-                  Alternate app icons
+                  Hide Pops from the carousel
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-400 mt-0.5">&#10003;</span>
                   Filters on Add App screen
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-orange-400 mt-0.5">&#10003;</span>
-                  SmartyPop suggestions
                 </li>
               </ul>
             </div>
